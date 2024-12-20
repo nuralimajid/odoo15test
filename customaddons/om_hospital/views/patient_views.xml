@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <!-- Action -->
+    <record id="action_hospital_patient" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.patient</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>
+            Click "Create" to add a new patient record.
+            </p>
+        </field>
+    </record>
+
+
     <!-- Tree View -->
     <record id="view_hospital_patient_tree" model="ir.ui.view">
         <field name="name">hospital.patient.tree</field>
@@ -7,8 +22,10 @@
         <field name="arch" type="xml">
             <tree string="Patient List">
                 <field name="name"/>
+                <field name="date_of_birth"/>
                 <field name="age"/>
                 <field name="gender"/>
+                <field name="identity_number"/>
             </tree>
         </field>
     </record>
@@ -18,29 +35,23 @@
         <field name="name">hospital.patient.form</field>
         <field name="model">hospital.patient</field>
         <field name="arch" type="xml">
-            <form string="Patient Form">
+            <form>
                 <sheet>
                     <group>
                         <field name="name"/>
-                        <field name="age"/>
+                        <field name="date_of_birth"/>
+                        <field name="age" readonly="1"/>
                         <field name="gender"/>
-                        <field name="description"/>
+                        <field name="identity_number"/>
+                        <field name="phone_number"/>
+                        <field name="email"/>
+                        <field name="address"/>
+                        <field name="emergency_contact"/>
+                        <field name="ref"/>
+                        <field name="active"/>
                     </group>
                 </sheet>
             </form>
-        </field>
-    </record>
-
-    <!-- Action to Open Views -->
-    <record id="action_hospital_patient" model="ir.actions.act_window">
-        <field name="name">Patients</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">hospital.patient</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p>
-                Click "Create" to add a new patient record.
-            </p>
         </field>
     </record>
 
