@@ -1,0 +1,75 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_city_tree" model="ir.ui.view">
+        <field name="name">res.city.tree</field>
+        <field name="model">res.city</field>
+        <field name="arch" type="xml">
+            <tree string="Cities">
+                <field name="name"/>
+                <field name="state_id"/>
+                <field name="country_id"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_city_form" model="ir.ui.view">
+        <field name="name">res.city.form</field>
+        <field name="model">res.city</field>
+        <field name="arch" type="xml">
+            <form string="City">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                        <group>
+                            <field name="country_id"/>
+                            <field name="state_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_city_search" model="ir.ui.view">
+        <field name="name">res.city.search</field>
+        <field name="model">res.city</field>
+        <field name="arch" type="xml">
+            <search string="Cities">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="state_id"/>
+                <field name="country_id"/>
+                <group expand="0" string="Group By">
+                    <filter name="state" string="State" context="{'group_by': 'state_id'}"/>
+                    <filter name="country" string="Country" context="{'group_by': 'country_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_city_state" model="ir.actions.act_window">
+        <field name="name">Cities</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.city</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new city
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_city_partner" name="City Partner" parent="menu_localisation" action="action_city_state" sequence="5"/>
+
+    
+</odoo>
