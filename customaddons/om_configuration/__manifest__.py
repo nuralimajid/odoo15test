@@ -9,11 +9,10 @@
     'company': 'dong li',
     'maintainer': 'lidong',
     'website': 'https://www.odoomates.tech',
-    'depends': ['contact'],
+    'depends': ['base','contacts'],
     'data': [
         'security/ir.model.access.csv',
-        'views/city_views.xml',
-        'views/menus.xml',
+        'views/city_view.xml',
     ],
     'installable': True,
     'application': True,

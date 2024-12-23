@@ -12,7 +12,8 @@ class ConfigurationCity(models.Model):
     country_id = fields.Many2one('res.country', string='Country', required=True)
     active = fields.Boolean(string='Active', default=True)
     
-    @api.onchange('state_id')
-    def _onchange_state_id(self):
-        if self.state_id:
-            self.country_id = self.state_id.country_id.id
+    @api.onchange('country_id')
+    def _onchange_country_id(self):
+        if self.country_id:
+            state = self.env['res.country.state'].search([('country_id','=',self.country_id.id)], limit =1)
+            self.state_id = state.id
