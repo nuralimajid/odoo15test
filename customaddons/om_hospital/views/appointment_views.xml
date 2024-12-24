@@ -23,6 +23,7 @@
                 <field name="doctor_id"/>
                 <field name="appointment_time"/>
                 <field name="booking_date"/>
+                <field name="complaint"/>
                 <field name="state"/>
             </tree>
         </field>
@@ -55,17 +56,13 @@
                         </group>
                         <group>
                             <field name="doctor_id"/>
-                            <field name="prescription"/>
+                            <field name="complaint"/>
                             <field name="priority"/>
                         </group>
                     </group>
 
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids"/>
-                    <field name="activity_ids"/>
-                    <field name="message_ids"/>
-                </div>
+                
             </form>
         </field>
     </record>

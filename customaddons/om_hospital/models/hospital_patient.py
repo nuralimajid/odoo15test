@@ -19,6 +19,8 @@ class HospitalPatient(models.Model):
     emergency_contact = fields.Char(string="Emergency Contact")
     ref = fields.Char(string="Reference")
     active = fields.Boolean(string="Active", default=True)
+    appointment_count = fields.Integer(string='Appointment Count', compute='_compute_appointment_count')
+    appointment_ids = fields.One2many('hospital.appointment', 'doctor_id', string="Appointments")
 
     @api.depends('date_of_birth')
     def _compute_age(self):
@@ -30,3 +32,22 @@ class HospitalPatient(models.Model):
                 )
             else:
                 record.age = 0
+
+
+    def _compute_appointment_count(self):
+        for rec in self:
+            appointment_count = self.env['hospital.appointment'].search_count([('patient_id', '=', rec.id)])
+            rec.appointment_count = appointment_count
+            print(appointment_count)
+
+    
+    # Smart button action to open the appointment view
+    def action_view_appointments(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Appointments',
+            'res_model': 'hospital.appointment',
+            'view_mode': 'tree,form',
+            'domain': [('patient_id', '=', self.id)],
+            'context': {'default_patient_id': self.id},
+        }

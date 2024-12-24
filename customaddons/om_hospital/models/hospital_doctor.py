@@ -5,10 +5,10 @@ from odoo import api, fields, models
 class HospitalDoctor(models.Model):
     _name = "hospital.doctor"
     _description = "Hospital Doctor"
-    _inherit = ['mail.thread', 'mail.activity.mixin']
     
     name = fields.Char(string='Name', required=True, tracking=True)
-    age = fields.Integer(string='Age', tracking=True)
+    date_of_birth = fields.Date(string='BirtDay')
+    age = fields.Integer(string='Age', compute='_compute_age', readoly=True, store=True)
     gender = fields.Selection([
         ('male', 'Male'),
         ('female', 'Female'),
@@ -17,18 +17,21 @@ class HospitalDoctor(models.Model):
     note = fields.Text(string='Description')
     image = fields.Binary(string="Doctor Image")
     active = fields.Boolean(default=True)
-    
-    ref = fields.Char(string='Reference', default=lambda self: ('New'))
+        
     appointment_count = fields.Integer(string='Appointment Count', compute='_compute_appointment_count')
     appointment_ids = fields.One2many('hospital.appointment', 'doctor_id', string="Appointments")
     
-    @api.model_create_multi
-    def create(self, vals_list):
-        for vals in vals_list:
-            vals['ref'] = self.env['ir.sequence'].next_by_code('hospital.doctor')
-        return super(HospitalDoctor, self).create(vals_list)
-    
-    def _compute_appointment_count(self):
-        for rec in self:
-            appointment_count = self.env['hospital.appointment'].search_count([('doctor_id', '=', rec.id)])
-            rec.appointment_count = appointment_count
+
+
+    @api.depends('date_of_birth')
+    def _compute_age(self):
+        for record in self:
+            if record.date_of_birth:
+                today = fields.Date.today()
+                record.age = today.year - record.date_of_birth.year - (
+                    (today.month, today.day) < (record.date_of_birth.month, record.date_of_birth.day)
+                )
+            else:
+                record.age = 0
+
+   

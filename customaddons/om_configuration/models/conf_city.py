@@ -8,12 +8,20 @@ class ConfigurationCity(models.Model):
     
     name = fields.Char(string='City Name', required=True)
     code = fields.Char(string='City Code')
-    state_id = fields.Many2one('res.country.state', string='State', required=True)
+    state_id = fields.Many2one(
+        'res.country.state', string='State', required=True,
+        domain="['|', ('country_id', '=', country_id), ('country_id', '=', False)]"
+    )
     country_id = fields.Many2one('res.country', string='Country', required=True)
     active = fields.Boolean(string='Active', default=True)
     
     @api.onchange('country_id')
     def _onchange_country_id(self):
         if self.country_id:
-            state = self.env['res.country.state'].search([('country_id','=',self.country_id.id)], limit =1)
-            self.state_id = state.id
+            return {
+                'domain': {'state_id': [('country_id', '=', self.country_id.id)]}
+            }
+        else:
+            return {
+                'domain': {'state_id': []}  # Tidak menampilkan state jika country_id kosong
+            }

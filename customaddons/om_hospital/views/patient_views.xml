@@ -37,6 +37,11 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_appointments" type="object" class="oe_stat_button" icon="fa-users">
+                            <field string="appointment" name="appointment_count" widget="statinfo"/>                        
+                        </button>
+                    </div>
                     <group>
                         <field name="name"/>
                         <field name="date_of_birth"/>

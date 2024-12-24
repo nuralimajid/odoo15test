@@ -15,7 +15,6 @@
             <tree>
                 <field name="name"/>
                 <field name="gender"/>
-                <field name="ref"/>
                 <field name="age"/>
                 <field name="active" widget="boolean_toggle"/>
             </tree>
@@ -31,11 +30,12 @@
                     <group>
                         <group>
                             <field name="name"/>
-                            <field name="ref"/>
                             <field name="gender"/>
+                            <field name="date_of_birth"/>
                         </group>
                         <group>
                             <field name="age"/>
+                            <field name="note"/>
                             <field name="active" widget="boolean_toggle"/>
                         </group>
                     </group>

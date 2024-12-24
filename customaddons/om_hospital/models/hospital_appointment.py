@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-
+from odoo.exceptions import ValidationError
 
 class HospitalAppointment(models.Model):
     _name = "hospital.appointment"
@@ -13,7 +13,7 @@ class HospitalAppointment(models.Model):
     doctor_id = fields.Many2one('hospital.doctor', string='Doctor', required=True)
     appointment_time = fields.Datetime(string='Appointment Time', required=True)
     booking_date = fields.Date(string='Booking Date', required=True, default=fields.Date.context_today)
-    prescription = fields.Text(string='Prescription')
+    complaint = fields.Text(string='Complaint')
     priority = fields.Selection([
         ('0', 'Normal'),
         ('1', 'Low'),
@@ -25,12 +25,16 @@ class HospitalAppointment(models.Model):
         ('done', 'Done'),
         ('cancel', 'Cancelled')], default='draft', string="Status", tracking=True)
 
-    @api.model
-    def create(self, vals):
-        if vals.get('name', ('New')) == ('New'):
-            vals['name'] = self.env['ir.sequence'].next_by_code('hospital.appointment') or ('New')
-        result = super(HospitalAppointment, self).create(vals)
-        return result
+
+    @api.onchange('appointment_time')
+    def _time_expired(self):
+        times = fields.Datetime.now()
+        print('test', times)
+        print('test2', self.appointment_time)
+        if self.appointment_time and self.appointment_time < times:
+            raise ValidationError('waktu sudah lewat')
+        
+    
     # Metode untuk mengubah status ke Confirmed
     def action_confirm(self):
         self.write({'state': 'confirm'})
